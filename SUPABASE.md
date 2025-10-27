@@ -255,13 +255,67 @@ create policy "Owner write access"
   with check ( auth.uid() = user_id );
 ```
 
+## 🚀 Deploy em Produção (GitHub Pages)
+
+### Configurar Variáveis de Ambiente para Produção
+
+Para o site funcionar no GitHub Pages, você precisa adicionar as credenciais do Supabase como **GitHub Secrets**:
+
+**Passo a passo:**
+
+1. **Acesse as configurações de Secrets:**
+   - Vá para: `https://github.com/betoshimabs/project-binary/settings/secrets/actions`
+   - Ou: **Settings** > **Secrets and variables** > **Actions**
+
+2. **Adicione o primeiro secret:**
+   - Clique em **"New repository secret"**
+   - Name: `VITE_SUPABASE_URL`
+   - Secret: Cole sua **Project URL** do Supabase
+   - Clique em **"Add secret"**
+
+3. **Adicione o segundo secret:**
+   - Clique em **"New repository secret"** novamente
+   - Name: `VITE_SUPABASE_ANON_KEY`
+   - Secret: Cole sua **anon/public key** do Supabase
+   - Clique em **"Add secret"**
+
+4. **Disparar novo deploy:**
+   - Faça qualquer commit e push para a branch `main`
+   - Ou vá em **Actions** > Selecione o último workflow > **Re-run jobs**
+
+5. **Verificar deploy:**
+   - Acesse a aba **Actions** do repositório
+   - Aguarde o workflow "Deploy to GitHub Pages" completar
+   - Acesse o site: `https://betoshimabs.github.io/project-binary/`
+
+### Por que GitHub Secrets são necessários?
+
+- As variáveis em `.env.local` só funcionam em desenvolvimento local
+- Durante o build para produção, o Vite precisa ter as variáveis disponíveis
+- GitHub Secrets são injetados no build de forma segura
+- Nunca commite credenciais diretamente no código!
+
+### Verificar se os Secrets estão configurados
+
+Se o site mostrar erro "Missing Supabase environment variables":
+1. Verifique se os secrets foram adicionados corretamente
+2. Confirme que os nomes estão exatos: `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`
+3. Faça um novo push para disparar o deploy novamente
+
 ## 🐛 Troubleshooting
 
-### Erro: "Missing Supabase environment variables"
+### Erro: "Missing Supabase environment variables" (Desenvolvimento Local)
 
 - Verifique se o arquivo `.env.local` existe
 - Confirme que as variáveis começam com `VITE_`
 - Reinicie o servidor de desenvolvimento (`npm run dev`)
+
+### Erro: "Missing Supabase environment variables" (Produção/GitHub Pages)
+
+- Verifique se os **GitHub Secrets** foram configurados
+- Confirme os nomes: `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`
+- Faça um novo push para disparar o deploy
+- Verifique o log do workflow na aba Actions
 
 ### Erro de CORS
 

@@ -111,6 +111,31 @@ O projeto usa GitHub Actions para deploy automático. Cada push na branch `main`
 2. Em **Source**, selecione: **GitHub Actions**
 3. O site será publicado automaticamente após o próximo push
 
+### Configurar Credenciais do Supabase para Produção
+
+**IMPORTANTE:** Para o site funcionar no GitHub Pages, você precisa adicionar as credenciais do Supabase como GitHub Secrets:
+
+1. Acesse: **Settings** > **Secrets and variables** > **Actions** do repositório
+2. Clique em **"New repository secret"**
+3. Adicione dois secrets:
+
+   **Secret 1:**
+   - Name: `VITE_SUPABASE_URL`
+   - Secret: [Cole sua Project URL do Supabase]
+
+   **Secret 2:**
+   - Name: `VITE_SUPABASE_ANON_KEY`
+   - Secret: [Cole sua anon/public key do Supabase]
+
+4. Após adicionar os secrets, faça um novo push para disparar o deploy
+5. O site será publicado com as credenciais corretas
+
+**Como obter as credenciais:**
+- Acesse [supabase.com/dashboard](https://supabase.com/dashboard)
+- Selecione seu projeto
+- Vá em **Settings** > **API**
+- Copie a **Project URL** e a **anon/public key**
+
 ## Licença
 
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
