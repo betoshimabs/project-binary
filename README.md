@@ -2,6 +2,8 @@
 
 Um projeto React moderno construído com Vite e TypeScript, hospedado no GitHub Pages.
 
+> **Status:** GitHub Secrets configurados e prontos para produção ✅
+
 ## Acesso ao Site
 
 O projeto está disponível em: [https://betoshimabs.github.io/project-binary/](https://betoshimabs.github.io/project-binary/)
