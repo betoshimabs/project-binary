@@ -10,7 +10,8 @@ O projeto está disponível em: [https://betoshimabs.github.io/project-binary/](
 
 ## Tecnologias
 
-- [React](https://react.dev/) - Biblioteca JavaScript para construção de interfaces
+- [React](https://react.dev/) 18.3.1 - Biblioteca JavaScript para construção de interfaces
+  > **Nota:** Usando React 18 ao invés de React 19 devido à compatibilidade com `@supabase/auth-ui-react`. Será atualizado quando a biblioteca suportar React 19.
 - [TypeScript](https://www.typescriptlang.org/) - JavaScript com tipagem estática
 - [Vite](https://vite.dev/) - Build tool moderna e rápida
 - [Supabase](https://supabase.com/) - Backend completo (Auth, Database, Storage, Realtime)

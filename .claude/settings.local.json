@@ -1,12 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git --version:*)",
-      "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nAdd Supabase integration with complete authentication system\n\nFeatures:\n- Supabase client configured with environment variables\n- Complete authentication system (login, signup, logout, password reset)\n- Auth UI components using @supabase/auth-ui-react\n- Protected routes with automatic redirection\n- Context-based auth state management\n- Custom hooks (useAuth, useSupabase)\n- Service layer for auth, database, and storage operations\n- TypeScript types for auth and database\n- React Router v6 integration with basename for GitHub Pages\n- Navbar with auth state and user info\n- Pages: Home, Dashboard (protected), Profile (protected), Login\n- Comprehensive documentation in SUPABASE.md\n- Script to generate TypeScript types from Supabase schema\n\nStructure:\n- src/lib/ - Supabase client configuration\n- src/contexts/ - AuthContext for global auth state\n- src/hooks/ - Custom React hooks\n- src/services/ - Auth, database, and storage services\n- src/components/auth/ - Authentication components\n- src/components/layout/ - Layout components (Navbar)\n- src/pages/ - Application pages\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git commit -m \"$(cat <<''EOF''\nConfigure GitHub Actions to use Supabase environment variables\n\nChanges:\n- Updated GitHub Actions workflow to inject Supabase credentials during build\n- Added environment variables (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY) to build step\n- Updated README.md with detailed instructions for configuring GitHub Secrets\n- Updated SUPABASE.md with production deployment guide\n- Added troubleshooting section for production environment variable issues\n\nThis fixes the \"Missing Supabase environment variables\" error on GitHub Pages.\n\nUsers need to:\n1. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY as GitHub Secrets\n2. Push to trigger new deployment with credentials\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git push:*)",
-      "Bash(variables\" error.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(npm install)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []
