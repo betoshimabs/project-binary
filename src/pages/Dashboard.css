@@ -1,0 +1,141 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dashboard-header {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.welcome-text strong {
+  color: #646cff;
+}
+
+.dashboard-content {
+  display: grid;
+  gap: 2rem;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.info-card p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+.user-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.user-info p {
+  margin: 0.5rem 0;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+}
+
+.steps-list li {
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border-left: 3px solid #646cff;
+}
+
+.example-section code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+.btn-fetch {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-fetch:hover:not(:disabled) {
+  background-color: #535bf2;
+}
+
+.btn-fetch:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 8px;
+  color: #ff6b6b;
+}
+
+.data-display {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.data-display pre {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .welcome-text {
+    color: #666;
+  }
+
+  .info-card {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e0e0;
+  }
+
+  .info-card p {
+    color: #666;
+  }
+
+  .user-info,
+  .steps-list li,
+  .data-display {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}

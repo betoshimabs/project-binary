@@ -11,6 +11,8 @@ O projeto está disponível em: [https://betoshimabs.github.io/project-binary/](
 - [React](https://react.dev/) - Biblioteca JavaScript para construção de interfaces
 - [TypeScript](https://www.typescriptlang.org/) - JavaScript com tipagem estática
 - [Vite](https://vite.dev/) - Build tool moderna e rápida
+- [Supabase](https://supabase.com/) - Backend completo (Auth, Database, Storage, Realtime)
+- [React Router](https://reactrouter.com/) - Navegação entre páginas
 - [GitHub Pages](https://pages.github.com/) - Hospedagem gratuita
 
 ## Estrutura do Projeto
@@ -18,18 +20,23 @@ O projeto está disponível em: [https://betoshimabs.github.io/project-binary/](
 ```
 project-binary/
 ├── src/
-│   ├── components/     # Componentes React reutilizáveis
-│   ├── pages/          # Páginas/views principais
-│   ├── hooks/          # Custom React hooks
-│   ├── utils/          # Funções utilitárias
-│   ├── types/          # TypeScript types e interfaces
-│   ├── services/       # APIs e serviços externos
-│   ├── assets/         # Imagens, fontes, etc
-│   ├── styles/         # CSS global
-│   ├── App.tsx         # Componente principal
-│   └── main.tsx        # Ponto de entrada
-├── public/             # Arquivos estáticos
-└── index.html          # HTML principal
+│   ├── components/
+│   │   ├── auth/          # Componentes de autenticação
+│   │   └── layout/        # Componentes de layout (Navbar, etc)
+│   ├── contexts/          # React Contexts (AuthContext)
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Configurações (Supabase client)
+│   ├── pages/             # Páginas/views (Home, Dashboard, Profile)
+│   ├── services/          # Services (auth, database, storage)
+│   ├── types/             # TypeScript types e interfaces
+│   ├── utils/             # Funções utilitárias
+│   ├── assets/            # Imagens, fontes, etc
+│   ├── styles/            # CSS global
+│   ├── App.tsx            # Componente principal com rotas
+│   └── main.tsx           # Ponto de entrada
+├── public/                # Arquivos estáticos
+├── .env.local             # Variáveis de ambiente (não commitado)
+└── SUPABASE.md            # Guia completo de integração Supabase
 ```
 
 ## Desenvolvimento
@@ -48,6 +55,13 @@ cd project-binary
 
 # Instale as dependências
 npm install
+
+# Configure o Supabase
+# 1. Copie o arquivo .env.example para .env.local
+cp .env.example .env.local
+
+# 2. Adicione suas credenciais do Supabase no .env.local
+# Veja SUPABASE.md para instruções detalhadas
 ```
 
 ### Comandos
@@ -61,7 +75,28 @@ npm run build
 
 # Preview da build de produção
 npm run preview
+
+# Gerar TypeScript types do Supabase
+npm run generate:types
 ```
+
+## Supabase
+
+Este projeto está integrado com Supabase para:
+
+- 🔐 **Autenticação** - Login/cadastro com email e senha
+- 💾 **Database** - PostgreSQL com Row Level Security
+- 📁 **Storage** - Upload e gerenciamento de arquivos
+- ⚡ **Realtime** - Subscriptions e updates em tempo real
+
+### Configuração Rápida
+
+1. Crie uma conta em [supabase.com](https://supabase.com)
+2. Crie um novo projeto
+3. Copie as credenciais (URL e anon key) para `.env.local`
+4. Execute `npm run dev`
+
+Para instruções detalhadas, consulte [SUPABASE.md](SUPABASE.md)
 
 ## Deploy
 

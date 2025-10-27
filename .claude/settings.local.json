@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git --version:*)"
+      "Bash(git --version:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd Supabase integration with complete authentication system\n\nFeatures:\n- Supabase client configured with environment variables\n- Complete authentication system (login, signup, logout, password reset)\n- Auth UI components using @supabase/auth-ui-react\n- Protected routes with automatic redirection\n- Context-based auth state management\n- Custom hooks (useAuth, useSupabase)\n- Service layer for auth, database, and storage operations\n- TypeScript types for auth and database\n- React Router v6 integration with basename for GitHub Pages\n- Navbar with auth state and user info\n- Pages: Home, Dashboard (protected), Profile (protected), Login\n- Comprehensive documentation in SUPABASE.md\n- Script to generate TypeScript types from Supabase schema\n\nStructure:\n- src/lib/ - Supabase client configuration\n- src/contexts/ - AuthContext for global auth state\n- src/hooks/ - Custom React hooks\n- src/services/ - Auth, database, and storage services\n- src/components/auth/ - Authentication components\n- src/components/layout/ - Layout components (Navbar)\n- src/pages/ - Application pages\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

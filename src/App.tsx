@@ -1,27 +1,44 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import { Navbar } from './components/layout/Navbar'
+import { ProtectedRoute } from './components/auth/ProtectedRoute'
+import { LoginPage } from './components/auth/LoginPage'
+import { Home } from './pages/Home'
+import { Dashboard } from './pages/Dashboard'
+import { Profile } from './pages/Profile'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <h1>Project Binary</h1>
-        <p>React + TypeScript + Vite</p>
-      </div>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Built with React, TypeScript, and Vite. Deployed on GitHub Pages.
-      </p>
-    </>
+    <Router basename="/project-binary">
+      <AuthProvider>
+        <div className="app">
+          <Navbar />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </main>
+        </div>
+      </AuthProvider>
+    </Router>
   )
 }
 

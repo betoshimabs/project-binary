@@ -1,0 +1,166 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.profile-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 3rem;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 auto 1.5rem;
+}
+
+.profile-header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.profile-info {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.info-value {
+  color: #fff;
+  text-align: right;
+  word-break: break-all;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-edit,
+.btn-password {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-edit {
+  background-color: #646cff;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #535bf2;
+}
+
+.btn-password {
+  background-color: transparent;
+  color: #646cff;
+  border: 2px solid #646cff;
+}
+
+.btn-password:hover {
+  background-color: #646cff;
+  color: white;
+}
+
+.profile-note {
+  padding: 1rem;
+  background: rgba(100, 108, 255, 0.1);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.profile-note p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.profile-note code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .info-value {
+    text-align: left;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .profile-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+  }
+
+  .profile-info {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .info-row {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .info-label {
+    color: #666;
+  }
+
+  .info-value {
+    color: #1a1a1a;
+  }
+}
