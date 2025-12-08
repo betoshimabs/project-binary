@@ -1,49 +1,53 @@
 .navbar {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Dark transparent */
+  backdrop-filter: blur(5px);
+  border-bottom: none;
+  padding: 1.5rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .navbar-container {
-  max-width: 1280px;
+  width: 95%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
   display: flex;
   justify-content: space-between;
+  /* Spread to edges */
   align-items: center;
+  position: relative;
 }
 
 .navbar-logo {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #646cff;
+  color: #ffffff;
   text-decoration: none;
-  transition: color 0.3s;
-}
-
-.navbar-logo:hover {
-  color: #535bf2;
+  text-shadow: 3px 3px 0px #000000;
+  /* Retro shadow */
+  font-family: 'Press Start 2P', cursive;
 }
 
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .navbar-link {
-  color: rgba(255, 255, 255, 0.87);
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  text-shadow: 2px 2px 0px #000000;
 }
 
 .navbar-link:hover {
-  color: #646cff;
+  color: #ffff00;
 }
 
 .navbar-user {
@@ -51,7 +55,7 @@
   align-items: center;
   gap: 1rem;
   padding-left: 1rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .user-email {
@@ -93,20 +97,5 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-left: 0;
     padding-top: 1rem;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  .navbar {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .navbar-link {
-    color: #213547;
-  }
-
-  .user-email {
-    color: #666;
   }
 }

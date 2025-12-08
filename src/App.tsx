@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { Navbar } from './components/layout/Navbar'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
-import { LoginPage } from './components/auth/LoginPage'
 import { Home } from './pages/Home'
 import { Dashboard } from './pages/Dashboard'
 import { Profile } from './pages/Profile'
@@ -17,7 +16,6 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginPage />} />
               <Route
                 path="/dashboard"
                 element={

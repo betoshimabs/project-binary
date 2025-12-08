@@ -8,6 +8,8 @@ export interface AuthContextType {
   signUp: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
+  verifyOtp: (email: string, token: string) => Promise<void>
+  updatePassword: (password: string) => Promise<void>
 }
 
 export interface AuthProviderProps {
