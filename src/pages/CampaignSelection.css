@@ -1,0 +1,116 @@
+.campaign-selection-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.campaign-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-shadow: 4px 4px 0px #000;
+    text-align: center;
+    image-rendering: pixelated;
+}
+
+.carousel-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    perspective: 1000px;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 4rem;
+    padding: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    align-items: center;
+    justify-content: flex-start;
+    /* Start alignment for scrolling */
+    width: 100%;
+    max-width: 90vw;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.campaign-card {
+    flex: 0 0 auto;
+    width: 300px;
+    /* Adjust based on image aspect ratio? Floppys are roughly square */
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.campaign-card:not(:hover):not(.selected) {
+    /* optional dimming */
+    filter: brightness(0.8);
+}
+
+.campaign-card:hover {
+    transform: scale(1.1) translateY(-10px);
+    z-index: 10;
+}
+
+.campaign-card.selected {
+    transform: scale(1.1) translateY(-10px);
+    filter: brightness(1.2) drop-shadow(0 0 10px #ff0055);
+    border: 2px solid transparent;
+    /* Placeholder to keep sizing? Or actual border */
+    border-radius: 10px;
+    z-index: 20;
+}
+
+.floppy-image {
+    width: 100%;
+    image-rendering: pixelated;
+    filter: drop-shadow(8px 8px 0px rgba(0, 0, 0, 0.5));
+}
+
+.campaign-label {
+    margin-top: 1rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    color: #fff;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.nav-button {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    background: none;
+    border: none;
+    font-family: 'Press Start 2P', monospace;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    text-shadow: 2px 2px 0px #000;
+    transition: transform 0.2s;
+}
+
+.nav-button:hover {
+    transform: scale(1.1);
+    color: #ff0055;
+}

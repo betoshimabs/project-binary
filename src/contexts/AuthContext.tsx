@@ -8,6 +8,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
+  const [role, setRole] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,7 +16,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
-      setLoading(false)
+      if (session?.user) {
+        fetchRole(session.user.id)
+      } else {
+        setLoading(false)
+      }
     })
 
     // Escutar mudanças de autenticação
@@ -24,11 +29,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
-      setLoading(false)
+      if (session?.user) {
+        fetchRole(session.user.id)
+      } else {
+        setRole(null)
+        setLoading(false)
+      }
     })
 
     return () => subscription.unsubscribe()
   }, [])
+
+  const fetchRole = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .single()
+
+      if (error) {
+        console.error('Error fetching role:', error)
+        setRole(null)
+      } else if (data) {
+        // @ts-ignore
+        setRole(data.role)
+      }
+    } catch (error) {
+      console.error('Error fetching role:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -75,6 +107,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const value = {
     user,
     session,
+    role,
     loading,
     signIn,
     signUp,

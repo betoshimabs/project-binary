@@ -40,7 +40,7 @@ export function Home() {
 
   const handleStart = () => {
     if (user) {
-      navigate('/dashboard')
+      navigate('/campaign-selection')
     } else {
       setShowAuth(true)
     }
@@ -132,7 +132,7 @@ export function Home() {
 
         if (error) throw error
 
-        navigate('/dashboard')
+        navigate('/campaign-selection')
       }
     } catch (err: any) {
       setError(err.message || 'Ocorreu um erro')

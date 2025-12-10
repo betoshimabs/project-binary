@@ -34,15 +34,16 @@ export function useGlitchText() {
     }, [])
 
     const getDisplayChar = (char: string, index: number) => {
-        // Space (index 7) is always visible
-        if (index === 7) return ' '
+        if (char === ' ') return ' '
         if (textState === 3) return char
 
-        // State 1 Visible Indices: P(0), o(2), e(4), t(6), i(9), a(11), y(13)
-        const state1Visible = [0, 2, 4, 6, 9, 11, 13].includes(index)
+        // Generic randomized visibility based on index and psuedo-random pattern
+        // Using a simple modulo pattern to simulate randomness without storage
+        const isVisibleState1 = (index * 7 + 3) % 2 === 0
+        const isVisibleState2 = (index * 3 + 7) % 2 === 0
 
-        if (textState === 1) return state1Visible ? char : '_'
-        if (textState === 2) return !state1Visible ? char : '_'
+        if (textState === 1) return isVisibleState1 ? char : '_'
+        if (textState === 2) return isVisibleState2 ? char : '_'
         return char
     }
 

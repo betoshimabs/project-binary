@@ -1,0 +1,210 @@
+.interaction-container {
+    display: grid;
+    grid-template-columns: 280px 1fr 300px;
+    grid-template-rows: 1fr 150px;
+    /* Monitor takes remaining height, Terminal takes fixed height at bottom */
+    gap: 1rem;
+    height: calc(100vh - 120px);
+    /* Full viewport minus header */
+    padding: 1rem;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Zone 1: Party (Left Panel) */
+.ac-party-panel {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    border: 1px solid #333;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 1rem;
+    overflow-y: auto;
+}
+
+/* Zone 2: Monitor (Center Top) */
+.ac-monitor-panel {
+    grid-column: 2;
+    grid-row: 1;
+    border: 2px solid #0f0;
+    background: rgba(0, 20, 0, 0.9);
+    position: relative;
+    padding: 1rem;
+    overflow-y: auto;
+    box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.ac-message {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    color: #0f0;
+    text-shadow: 0 0 2px #0f0;
+}
+
+.ac-message.player {
+    color: #fff;
+    text-align: right;
+    border-right: 2px solid #fff;
+    padding-right: 0.5rem;
+}
+
+.ac-message.master {
+    color: #ff0;
+    /* Yellow for Master/Narrator */
+}
+
+.ac-message.system {
+    color: #0ff;
+    /* Cyan for System/Rules */
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Zone 3: Terminal (Center Bottom) */
+.ac-terminal-panel {
+    grid-column: 2;
+    grid-row: 2;
+    border: 1px solid #0f0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+.ac-terminal-input-area {
+    display: flex;
+    gap: 0.5rem;
+    height: 100%;
+}
+
+.ac-terminal-prompt {
+    color: #0f0;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.ac-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.1rem;
+    outline: none;
+    resize: none;
+    line-height: 1.5;
+}
+
+/* Zone 4: Environment (Right Top) */
+.ac-environment-panel {
+    grid-column: 3;
+    grid-row: 1;
+    border: 1px solid #333;
+    background: rgba(10, 10, 20, 0.8);
+    padding: 0.5rem;
+    color: #aaa;
+}
+
+/* Zone 5: Dice Roller (Right Bottom) */
+.ac-dice-panel {
+    grid-column: 3;
+    grid-row: 2;
+    border: 1px dashed #555;
+    background: rgba(20, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border: 1px solid #000;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0f0;
+}
+
+/* Character Card Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.char-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Dice Controls */
+.ac-dice-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #0f0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.ac-dice-btn:hover {
+    background: #0f0;
+    color: #000;
+    box-shadow: 0 0 10px #0f0;
+}
+
+.ac-digit-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    width: 40px;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.ac-roll-btn {
+    margin-top: 0.5rem;
+    background: #222;
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 0.5rem 1.5rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ac-roll-btn:hover {
+    background: #0f0;
+    color: #000;
+    box-shadow: 0 0 15px #0f0;
+}
+
+.ac-roll-btn:active {
+    transform: scale(0.95);
+}

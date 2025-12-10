@@ -4,7 +4,7 @@ import { useGlitchText } from '../../hooks/useGlitchText'
 import './Navbar.css'
 
 export function Navbar() {
-  const { user, signOut } = useAuth()
+  const { user, role, signOut } = useAuth()
   const navigate = useNavigate()
   const { getDisplayChar } = useGlitchText()
 
@@ -35,12 +35,14 @@ export function Navbar() {
 
           {user && (
             <>
-              <Link to="/dashboard" className="navbar-link">
-                Dashboard
-              </Link>
               <Link to="/profile" className="navbar-link">
                 Perfil
               </Link>
+              {role === 'admin' && (
+                <Link to="/admin" className="navbar-link" style={{ color: '#00ff00' }}>
+                  Admin
+                </Link>
+              )}
               <div className="navbar-user">
                 <span className="user-email">{user.email}</span>
                 <button onClick={handleSignOut} className="btn-signout">
