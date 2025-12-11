@@ -175,7 +175,7 @@ export function InteractionChat() {
 
     const fetchData = async (charId: string, campId: string) => {
         const { data: charData } = await supabase.from('characters').select('*').eq('id', charId).single()
-        if (charData) setCharacter(charData)
+        if (charData) setCharacter(charData as unknown as Character)
 
         const { data: campData } = await supabase.from('campaigns').select('*').eq('id', campId).single()
         if (campData) setCampaign(campData)
@@ -249,11 +249,16 @@ export function InteractionChat() {
         setMessages(prev => [...prev, tempUserMsg])
 
         try {
+            if (!user?.id) {
+                console.error("User not authenticated")
+                return
+            }
+
             // 1. Save User Message
             // DB expects 'user' role, not 'player'
             const { error: msgError } = await supabase.from('messages').insert({
                 campaign_id: campaignId,
-                user_id: user?.id, // Added user_id
+                user_id: user.id, // Added user_id
                 role: 'user',
                 content: userContent
             });
@@ -268,6 +273,7 @@ export function InteractionChat() {
 
                 await supabase.from('context_summaries').insert({
                     campaign_id: campaignId,
+                    user_id: user!.id,
                     summary: newSummary
                 });
                 setSummary(newSummary);
@@ -287,7 +293,7 @@ export function InteractionChat() {
             // DB expects 'assistant' role for Master
             const { error: aiError } = await supabase.from('messages').insert({
                 campaign_id: campaignId,
-                user_id: user?.id, // Added user_id
+                user_id: user.id, // Added user_id
                 role: 'assistant',
                 content: response
             });
@@ -335,8 +341,8 @@ export function InteractionChat() {
 
             {/* Zone 2: Monitor (Center Top) */}
             <div className="ac-monitor-panel">
-                {messages.map((msg, idx) => (
-                    <div key={msg.id} className={`ac - message ${msg.sender} `}>
+                {messages.map((msg: Message) => (
+                    <div key={msg.id} className={`ac-message ${msg.sender}`}>
                         <div style={{ fontSize: '0.7rem', opacity: 0.5, marginBottom: '0.2rem' }}>
                             {msg.sender === 'player' ? character?.name : msg.sender === 'master' ? 'MESTRE' : 'SISTEMA'}
                         </div>

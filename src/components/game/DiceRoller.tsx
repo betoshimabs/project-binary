@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState, useEffect, useRef } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Physics, useConvexPolyhedron, usePlane } from '@react-three/cannon'
 import * as THREE from 'three'
@@ -36,7 +36,7 @@ function getFaceData(normal: THREE.Vector3) {
     const targetUp = normal.y > 0 ? new THREE.Vector3(0, 1, 0) : new THREE.Vector3(0, -1, 0)
 
     // Re-orient using quaternion specifically
-    const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal)
+    // const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal)
 
     // This aligns Z. Now we spin around Z to align Y with targetUp projection?
     // Let's rely on standard LookAt behavior which does exactly this (aligns up).

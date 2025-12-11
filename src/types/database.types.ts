@@ -122,6 +122,7 @@ export type Database = {
       }
       context_summaries: {
         Row: {
+          campaign_id: string
           created_at: string
           embedding: string | null
           id: string
@@ -129,6 +130,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          campaign_id: string
           created_at?: string
           embedding?: string | null
           id?: string
@@ -136,6 +138,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          campaign_id?: string
           created_at?: string
           embedding?: string | null
           id?: string
@@ -197,6 +200,7 @@ export type Database = {
       }
       messages: {
         Row: {
+          campaign_id: string
           content: string
           created_at: string
           id: string
@@ -204,6 +208,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          campaign_id: string
           content: string
           created_at?: string
           id?: string
@@ -211,6 +216,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          campaign_id?: string
           content?: string
           created_at?: string
           id?: string

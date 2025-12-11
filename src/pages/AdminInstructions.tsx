@@ -7,14 +7,12 @@ import './AdminDashboard.css'
 export function AdminInstructions() {
     const navigate = useNavigate()
     const [instruction, setInstruction] = useState<string>('Carregando...')
-    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         fetchMasterInstruction()
     }, [])
 
     const fetchMasterInstruction = async () => {
-        setLoading(true)
         const { data, error } = await supabase
             .from('system_prompts')
             .select('template')
@@ -27,7 +25,6 @@ export function AdminInstructions() {
         } else if (data) {
             setInstruction(data.template)
         }
-        setLoading(false)
     }
 
     return (

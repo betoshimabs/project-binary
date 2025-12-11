@@ -7,7 +7,7 @@ import './CampaignSelection.css'
 interface Campaign {
     id: string
     title: string
-    description: string
+    description: string | null
     imageUrl?: string
 }
 
@@ -42,7 +42,7 @@ export function CampaignSelection() {
         fetchCampaigns()
     }, [])
 
-    const handleSelect = (id: string, name: string) => {
+    const handleSelect = (id: string) => {
         setSelectedId(id)
         // console.log(`Selected campaign ${id}`)
         setTimeout(() => {
@@ -74,7 +74,7 @@ export function CampaignSelection() {
                                 <div
                                     key={campaign.id}
                                     className={`campaign-card ${selectedId === campaign.id ? 'selected' : ''}`}
-                                    onClick={() => handleSelect(campaign.id, campaign.title)}
+                                    onClick={() => handleSelect(campaign.id)}
                                 >
                                     <img
                                         src={FLOPPY_IMAGE_URL}
