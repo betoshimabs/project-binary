@@ -15,6 +15,7 @@ export type Database = {
           description: string | null
           id: string
           is_active: boolean | null
+          is_public: boolean | null
           language: string | null
           max_tokens: number | null
           metadata: Json | null
@@ -30,6 +31,7 @@ export type Database = {
           description?: string | null
           id?: string
           is_active?: boolean | null
+          is_public?: boolean | null
           language?: string | null
           max_tokens?: number | null
           metadata?: Json | null
@@ -45,6 +47,7 @@ export type Database = {
           description?: string | null
           id?: string
           is_active?: boolean | null
+          is_public?: boolean | null
           language?: string | null
           max_tokens?: number | null
           metadata?: Json | null

@@ -9,6 +9,7 @@ interface Campaign {
   id: string
   title: string
   description: string | null
+  is_public: boolean | null // Added
   created_at: string
 }
 
@@ -23,6 +24,7 @@ export function AdminCampaigns() {
   // Form State
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [isPublic, setIsPublic] = useState(false)
 
   useEffect(() => {
     fetchCampaigns()
@@ -67,6 +69,7 @@ export function AdminCampaigns() {
     setCurrentId(campaign.id)
     setTitle(campaign.title)
     setDescription(campaign.description || '')
+    setIsPublic(campaign.is_public || false)
   }
 
   const handleCancel = () => {
@@ -74,6 +77,7 @@ export function AdminCampaigns() {
     setCurrentId(null)
     setTitle('')
     setDescription('')
+    setIsPublic(false)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,6 +93,7 @@ export function AdminCampaigns() {
           .update({
             title,
             description,
+            is_public: isPublic,
             updated_at: new Date().toISOString()
           })
           .eq('id', currentId)
@@ -103,6 +108,7 @@ export function AdminCampaigns() {
             user_id: user.id,
             title,
             description,
+            is_public: isPublic,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           })
@@ -147,6 +153,18 @@ export function AdminCampaigns() {
               rows={3}
             />
           </div>
+          <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+            <input
+              type="checkbox"
+              id="isPublic"
+              checked={isPublic}
+              onChange={e => setIsPublic(e.target.checked)}
+              style={{ marginRight: '0.5rem' }}
+            />
+            <label htmlFor="isPublic" style={{ cursor: 'pointer', color: isPublic ? '#0f0' : '#888' }}>
+              {isPublic ? 'CAMPANHA PÚBLICA (Visível para todos)' : 'CAMPANHA PRIVADA (Apenas você)'}
+            </label>
+          </div>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button type="submit" className="admin-menu-btn" style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}>
               {isEditing ? 'SALVAR ALTERAÇÕES' : 'CRIAR CAMPANHA'}
@@ -165,6 +183,7 @@ export function AdminCampaigns() {
               <thead>
                 <tr style={{ borderBottom: '1px solid #0f0', textAlign: 'left' }}>
                   <th style={{ padding: '0.5rem' }}>TÍTULO</th>
+                  <th style={{ padding: '0.5rem' }}>VISIBILIDADE</th>
                   <th style={{ padding: '0.5rem' }}>DESCRIÇÃO</th>
                   <th style={{ padding: '0.5rem' }}>AÇÕES</th>
                 </tr>
@@ -173,6 +192,9 @@ export function AdminCampaigns() {
                 {campaigns.map(campaign => (
                   <tr key={campaign.id} style={{ borderBottom: '1px solid #333' }}>
                     <td style={{ padding: '0.5rem' }}>{campaign.title}</td>
+                    <td style={{ padding: '0.5rem', color: campaign.is_public ? '#0f0' : '#888' }}>
+                      {campaign.is_public ? 'PÚBLICA' : 'PRIVADA'}
+                    </td>
                     <td style={{ padding: '0.5rem' }}>{campaign.description}</td>
                     <td style={{ padding: '0.5rem', display: 'flex', gap: '0.5rem' }}>
                       <button onClick={() => handleEdit(campaign)} style={{ background: 'none', border: 'none', color: '#0f0', cursor: 'pointer', fontFamily: 'Press Start 2P', fontSize: '0.6rem' }}>[EDITAR]</button>

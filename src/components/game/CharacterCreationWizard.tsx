@@ -84,7 +84,14 @@ export function CharacterCreationWizard({ existingCharacter, initialCampaignId, 
 
     useEffect(() => {
         const fetchCampaigns = async () => {
-            const { data, error } = await supabase.from('campaigns').select('id, title').order('created_at', { ascending: false })
+            const { data: { user } } = await supabase.auth.getUser()
+            const userId = user?.id
+
+            const { data, error } = await supabase
+                .from('campaigns')
+                .select('id, title')
+                .or(`is_public.eq.true${userId ? `,user_id.eq.${userId}` : ''}`)
+                .order('created_at', { ascending: false })
             if (!error && data) setCampaigns(data)
         }
         fetchCampaigns()

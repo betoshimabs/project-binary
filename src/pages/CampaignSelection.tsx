@@ -25,9 +25,14 @@ export function CampaignSelection() {
     useEffect(() => {
         const fetchCampaigns = async () => {
             try {
+                const { data: { user } } = await supabase.auth.getUser()
+                const userId = user?.id
+
                 const { data, error } = await supabase
                     .from('campaigns')
                     .select('id, title, description')
+                    // Show public campaigns OR campaigns created by the user
+                    .or(`is_public.eq.true${userId ? `,user_id.eq.${userId}` : ''}`)
                     .order('created_at', { ascending: false })
 
                 if (error) throw error
