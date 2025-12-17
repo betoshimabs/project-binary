@@ -30,6 +30,10 @@ export interface Character {
         }
     }
     avatar_url: string | null
+    current_hp?: number
+    max_hp?: number
+    current_mp?: number
+    max_mp?: number
 }
 
 interface Campaign {
@@ -166,26 +170,14 @@ export function CharacterCreationWizard({ existingCharacter, initialCampaignId, 
 
             try {
                 // @ts-ignore
-                const base64Image = await aiService.generateCharacterAvatar({
+                const imageUrl = await aiService.generateCharacterAvatar({
                     name,
                     physical_description: physDesc,
                     origin_description: originDesc
                 })
-                const blob = await (await fetch(`data:image/png;base64,${base64Image}`)).blob()
-                const fileName = `${Date.now()}_${name.replace(/\s+/g, '_')}.png`
 
-                const { error } = await supabase.storage
-                    .from('characters_avatar')
-                    .upload(fileName, blob, { upsert: true })
-
-                if (error) {
-                    console.error('Upload Error:', error)
-                } else {
-                    const { data: publicUrlData } = supabase.storage
-                        .from('characters_avatar')
-                        .getPublicUrl(fileName)
-                    setAvatarUrl(publicUrlData.publicUrl)
-                }
+                // Directly use the external URL to avoid CORS issues with client-side fetching
+                setAvatarUrl(imageUrl)
             } catch (imgError) {
                 console.warn("Falha na geração de imagem", imgError)
             }
@@ -216,6 +208,10 @@ export function CharacterCreationWizard({ existingCharacter, initialCampaignId, 
             equipment
         }
 
+
+        const calculatedMaxHp = 10 + brute
+        const calculatedMaxMp = 5 + int
+
         try {
             let characterId = existingCharacter?.id
 
@@ -228,7 +224,14 @@ export function CharacterCreationWizard({ existingCharacter, initialCampaignId, 
                     origin_description: originDesc,
                     attributes,
                     skills,
-                    avatar_url: avatarUrl
+                    avatar_url: avatarUrl,
+                    max_hp: calculatedMaxHp,
+                    max_mp: calculatedMaxMp
+                    // Note: We don't necessarily reset current_hp/mp on edit unless it exceeds max, 
+                    // but for simplicity we can maybe validade it elsewhere. 
+                    // For now, let's only update MAX values on edit, unless the user manually resets.
+                    // Actually, if Max changes, we should probably ensure proper constraints, 
+                    // but for this MVP let's just save the new Max.
                 }).eq('id', existingCharacter.id)
                 if (error) throw error
             } else {
@@ -242,7 +245,11 @@ export function CharacterCreationWizard({ existingCharacter, initialCampaignId, 
                     attributes,
                     skills,
                     description: physDesc,
-                    avatar_url: avatarUrl
+                    avatar_url: avatarUrl,
+                    current_hp: calculatedMaxHp,
+                    max_hp: calculatedMaxHp,
+                    current_mp: calculatedMaxMp,
+                    max_mp: calculatedMaxMp
                 }).select().single()
 
                 if (error) throw error

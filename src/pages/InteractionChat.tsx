@@ -30,6 +30,22 @@ function CharacterCard({ character }: { character: Character }) {
         margin: '0 1px'
     });
 
+    const renderBar = (current: number, max: number, filledChar: string, emptyChar: string, color: string) => {
+        const filled = Math.max(0, Math.min(current, max));
+        const empty = Math.max(0, max - filled);
+        const percent = Math.round((current / max) * 100);
+
+        // Generate strings
+        const filledStr = filledChar.repeat(filled);
+        const emptyStr = emptyChar.repeat(empty);
+
+        return (
+            <div style={{ color: color }}>
+                {color === '#fb4934' ? 'HP' : 'MP'}: [{filledStr}<span style={{ opacity: 0.3 }}>{emptyStr}</span>] {current}/{max}
+            </div>
+        );
+    };
+
     return (
         <div style={{ padding: '0.5rem', border: '1px solid #333', background: '#111', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {/* Tabs */}
@@ -50,8 +66,10 @@ function CharacterCard({ character }: { character: Character }) {
                         )}
                         <div style={{ color: '#0f0', fontWeight: 'bold', fontSize: '0.9rem', textAlign: 'center' }}>{character.name}</div>
                         <div style={{ marginTop: '0.5rem', fontFamily: 'monospace' }}>
-                            <div style={{ color: '#fb4934' }}>HP: [♥♥♥♥♥♥♥♥♥♥] 100%</div>
-                            <div style={{ color: '#83a598' }}>MP: [■■■■■.....] 50%</div>
+                            <div style={{ marginTop: '0.5rem', fontFamily: 'monospace' }}>
+                                {renderBar(character.current_hp ?? 10, character.max_hp ?? 10, '♥', '♡', '#fb4934')}
+                                {renderBar(character.current_mp ?? 5, character.max_mp ?? 5, '■', '□', '#83a598')}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -163,6 +181,13 @@ export function InteractionChat() {
 
     const [summary, setSummary] = useState<string>('')
     const [campaign, setCampaign] = useState<any>(null)
+    const [threats, setThreats] = useState<any[]>([])
+    const [narrativeMode, setNarrativeMode] = useState<number>(2) // 1=Tactical, 2=Balanced, 3=Immersive
+
+    // Auto-scroll to bottom when messages change or AI starts/stops thinking
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages, aiThinking])
 
     useEffect(() => {
         if (!state?.characterId || !campaignId) {
@@ -179,6 +204,16 @@ export function InteractionChat() {
 
         const { data: campData } = await supabase.from('campaigns').select('*').eq('id', campId).single()
         if (campData) setCampaign(campData)
+
+        // Load active threats
+        const { data: activeThreats } = await supabase
+            .from('threats')
+            .select('*')
+            .eq('campaign_id', campId)
+            .eq('character_id', charId)
+            .eq('status', 'active');
+
+        if (activeThreats) setThreats(activeThreats);
     }
 
     const loadChatHistory = async () => {
@@ -195,11 +230,12 @@ export function InteractionChat() {
 
         if (summaryData) setSummary(summaryData.summary);
 
-        // 2. Get Messages
+        // 2. Get Messages (Filtered by Character)
         const { data: msgData } = await supabase
             .from('messages')
             .select('*')
             .eq('campaign_id', campaignId)
+            .eq('character_id', state.characterId) // Added isolation
             .order('created_at', { ascending: true }); // ASC for display
 
         if (msgData && msgData.length > 0) {
@@ -231,9 +267,14 @@ export function InteractionChat() {
         setLoading(false);
     }
 
+    const handleDiceComplete = (successes: number) => {
+        setIsRolling(false);
+        setInputValue(`Obtive ${successes} sucesso(s) na rolagem.`);
+    };
+
     const handleSendMessage = async (e?: React.FormEvent) => {
         if (e) e.preventDefault()
-        if (!inputValue.trim() || aiThinking || !campaignId) return
+        if (!inputValue.trim() || aiThinking || !campaignId || !state?.characterId) return
 
         const userContent = inputValue;
         setInputValue('')
@@ -254,11 +295,11 @@ export function InteractionChat() {
                 return
             }
 
-            // 1. Save User Message
-            // DB expects 'user' role, not 'player'
+            // 1. Save User Message with Character ID
             const { error: msgError } = await supabase.from('messages').insert({
                 campaign_id: campaignId,
-                user_id: user.id, // Added user_id
+                user_id: user.id,
+                character_id: state.characterId, // Added isolation
                 role: 'user',
                 content: userContent
             });
@@ -286,7 +327,8 @@ export function InteractionChat() {
                     character,
                     campaign
                 },
-                { summary, recentMessages: messages.slice(-10) }
+                { summary, recentMessages: messages.slice(-10) },
+                narrativeMode // New Arg
             );
 
             // 4. Save AI/Master Message
@@ -294,6 +336,7 @@ export function InteractionChat() {
             const { error: aiError } = await supabase.from('messages').insert({
                 campaign_id: campaignId,
                 user_id: user.id, // Added user_id
+                character_id: state.characterId, // Added isolation for AI response
                 role: 'assistant',
                 content: response
             });
@@ -319,6 +362,10 @@ export function InteractionChat() {
             setMessages(prev => [...prev, errorMsg])
         } finally {
             setAiThinking(false)
+            // Fix V2: Always refresh character stats (and threats) after AI turn to resolve Lag.
+            if (state?.characterId && campaignId) {
+                fetchData(state.characterId, campaignId);
+            }
         }
     }
 
@@ -387,9 +434,41 @@ export function InteractionChat() {
                     <p>CLIMA: Estático</p>
                     <p>QUEST ATUAL: Sobreviver</p>
                 </div>
+
+                {/* Narrative Style Slider */}
+                <div style={{ margin: '1rem 0', borderTop: '1px solid #333', paddingTop: '0.5rem' }}>
+                    <h5 style={{ margin: '0 0 0.5rem 0', color: '#ff0', fontSize: '0.75rem' }}>NÍVEL NARRATIVO</h5>
+                    <input
+                        type="range"
+                        min="1"
+                        max="3"
+                        step="1"
+                        value={narrativeMode}
+                        onChange={(e) => setNarrativeMode(parseInt(e.target.value))}
+                        style={{ width: '100%', cursor: 'pointer' }}
+                    />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#888', marginTop: '0.2rem' }}>
+                        <span style={narrativeMode === 1 ? { color: '#fff' } : {}}>Direto</span>
+                        <span style={narrativeMode === 2 ? { color: '#fff' } : {}}>Neutro</span>
+                        <span style={narrativeMode === 3 ? { color: '#fff' } : {}}>Imersivo</span>
+                    </div>
+                </div>
+
                 <div style={{ borderTop: '1px solid #333', paddingTop: '0.5rem' }}>
                     <h5 style={{ margin: 0, color: '#f00', fontSize: '0.8rem' }}>AMEAÇAS</h5>
-                    <p style={{ fontSize: '0.7rem', fontStyle: 'italic', color: '#555' }}>Nenhuma detectada.</p>
+                    {threats.length === 0 ? (
+                        <p style={{ fontSize: '0.7rem', fontStyle: 'italic', color: '#555' }}>Nenhuma detectada.</p>
+                    ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.5rem' }}>
+                            {threats.map(t => (
+                                <div key={t.id} style={{ fontSize: '0.75rem', borderLeft: '2px solid #f00', paddingLeft: '0.5rem' }}>
+                                    <div style={{ color: '#fff' }}>{t.name}</div>
+                                    <div style={{ color: '#f00' }}>♥ {t.current_hp}/{t.max_hp}</div>
+                                    <div style={{ fontSize: '0.65rem', color: '#666' }}>{t.status.toUpperCase()}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -433,11 +512,8 @@ export function InteractionChat() {
             <DiceRoller
                 active={isRolling}
                 count={diceCount}
-                onComplete={(successes) => {
-                    setIsRolling(false)
-                    setInputValue(`Obtive ${successes} sucesso(s) na rolagem.`)
-                }}
+                onComplete={handleDiceComplete}
             />
         </div>
-    )
+    );
 }
